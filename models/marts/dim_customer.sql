@@ -19,12 +19,12 @@ with
 
 ,   selected2 as (
         select
-            rowguid
-            , businessentityid
+            businessentityid
             , title
             , lastname
             , firstname
             , middlename
+            , rowguid
             , emailpromotion
             , persontype
             , namestyle
@@ -35,31 +35,30 @@ with
     )
 ,   transformed2 as (
         select
-        row_number () over (order by rowguid) as person_sk
+        row_number () over (order by businessentityid) as person_sk
         , *
     from selected2
 )
 
 ,   final as (
         select
-            transformed1.customerid
-            , transformed1.personid
+            transformed1.personid
+            , transformed1.customerid
             , transformed1.territoryid
             , transformed1.storeid
-            , transformed1.rowguid
-            , transformed1.modifieddate
             , transformed2.businessentityid
             , transformed2.title
             , transformed2.lastname
             , transformed2.firstname
             , transformed2.middlename
+            , transformed2.suffix
             , transformed2.emailpromotion
             , transformed2.persontype
             , transformed2.namestyle
-            , transformed2.suffix
-            --, transformed2.modifieddate
+            , transformed1.rowguid
+            , transformed1.modifieddate
             from transformed1
-            left join transformed2 on transformed1.rowguid = transformed2.rowguid	        
+            left join transformed2 on transformed1.personid = transformed2.businessentityid	        
 )
 
 select *

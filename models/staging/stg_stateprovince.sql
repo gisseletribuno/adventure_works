@@ -8,7 +8,7 @@ with
             , rowguid
             , territoryid
             
-            , name
+            , name 
             , stateprovincecode
             , countryregioncode
             , isonlystateprovinceflag
