@@ -40,6 +40,39 @@ with
     from selected2
 )
 
+,   selected3 as (
+        select
+            businessentityid
+            , creditcardid	
+            , modifieddate
+
+        from {{ref('stg_personcreditcard')}}            
+    )
+,   transformed3 as (
+        select
+        row_number () over (order by businessentityid) as personcreditcard_sk
+        , *
+    from selected3
+)
+
+,   selected4 as (
+        select
+            creditcardid
+            , cardtype
+            , cardnumber
+            , expmonth
+            , expyear	
+            , modifieddate
+
+        from {{ref('stg_creditcard')}}            
+    )
+,   transformed4 as (
+        select
+        row_number () over (order by creditcardid) as creditcard_sk
+        , *
+    from selected4
+)
+
 ,   final as (
         select
             transformed1.personid
@@ -55,10 +88,17 @@ with
             , transformed2.emailpromotion
             , transformed2.persontype
             , transformed2.namestyle
+            , transformed3.creditcardid
+            , transformed4.cardtype
+            , transformed4.cardnumber
+            , transformed4.expmonth
+            , transformed4.expyear	
             , transformed1.rowguid
             , transformed1.modifieddate
             from transformed1
-            left join transformed2 on transformed1.personid = transformed2.businessentityid	        
+            left join transformed2 on transformed1.personid = transformed2.businessentityid
+            left join transformed3 on transformed2.businessentityid = transformed3.businessentityid 
+            left join transformed4 on transformed3.creditcardid = transformed4.creditcardid  
 )
 
 select *

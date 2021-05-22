@@ -11,8 +11,9 @@ sources:
       - name: creditcard
       - name: customer
       - name: person
+      - name: personcreditcard
       - name: address
       - name: stateprovince
       - name: countryregion
-      - name: salesterritory           
-
+      - name: salesperson           
+      - name: employee   
