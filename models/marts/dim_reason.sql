@@ -1,15 +1,15 @@
 with
     selected1 as (
         select
-            salesreasonid	
-            , salesorderid	
+            salesorderid
+            , salesreasonid		
             , modifieddate	
 
         from {{ref('stg_salesorderheaderreason')}}
     )
 ,   transformed1 as (
         select
-        row_number () over (order by salesreasonid) as salesreason_sk
+        row_number () over (order by salesorderid) as salesreason_sk
         , *
     from selected1
 )
@@ -32,13 +32,13 @@ with
 
 ,   final as (
         select
-            transformed1.salesreasonid
+            transformed1.salesreason_sk
             , transformed2.name	
             , transformed2.modifieddate
             , transformed2.reasontype
 
             from transformed1
-            left join transformed2 on transformed1.salesreasonid = transformed2.salesreasonid	        
+            left join transformed2 on transformed1.salesreason_sk = transformed2.salesreasonid	        
 )
 
 select *

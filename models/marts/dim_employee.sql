@@ -72,7 +72,7 @@ with
 
 ,   final as (
         select
-            transformed1.businessentityid
+            transformed1.employee_sk
             , transformed2.nationalidnumber
             , transformed2.loginid	
             , transformed2.jobtitle

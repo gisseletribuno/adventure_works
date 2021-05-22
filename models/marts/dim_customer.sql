@@ -76,7 +76,7 @@ with
 ,   final as (
         select
             transformed1.personid
-            , transformed1.customerid
+            , transformed1.customer_sk
             , transformed1.territoryid
             , transformed1.storeid
             , transformed2.businessentityid

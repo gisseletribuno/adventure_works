@@ -34,7 +34,7 @@ with
     )
 ,   transformed2 as (
         select
-        row_number () over (order by stateprovinceid) as stateprovince_sk
+        row_number () over (order by territoryid) as location_sk
         , *
     from selected2
 )
@@ -58,7 +58,7 @@ with
         select
             transformed1.stateprovinceid
             , transformed1.addressid
-            , transformed2.territoryid            	
+            , transformed2.location_sk
             , transformed1.city	
             , transformed1.addressline1
             , transformed1.addressline2	
