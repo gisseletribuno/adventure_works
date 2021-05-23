@@ -5,7 +5,7 @@ models:
     - name: dim_product
       description: "Tabela de dimensão de produtos"
       columns:
-          - name: productid
+          - name: product_sk
             description: "The primary key for this table"
             tests:
                 - unique
@@ -14,7 +14,7 @@ models:
     - name: dim_customer
       description: "Tabela de dimensão de clientes"
       columns:
-          - name: customerid
+          - name: customer_sk
             description: "The primary key for this table"
             tests:
                 - unique
@@ -23,25 +23,34 @@ models:
     - name: dim_salesreason
       description: "Tabela de dimensão de motivo de compra"
       columns:
-          - name: salesreasonid
+          - name: reason_sk
             description: "The primary key for this table"
             tests:
                 - unique
                 - not_null
-        
-    - name: dim_creditcard
-      description: "Tabela de dimensão de cartão de crédito"
-      columns:
-          - name: creditcardid
-            description: "The primary key for this table"
-            tests:
-                - unique
-                - not_null
-        
+               
     - name: dim_location
       description: "Tabela de dimensão de localização"
       columns:
-          - name: addressid
+          - name: location_sk
+            description: "The primary key for this table"
+            tests:
+                - unique
+                - not_null
+
+    - name: dim_employee
+      description: "Tabela de dimensão de funiconários"
+      columns:
+          - name: employee_sk
+            description: "The primary key for this table"
+            tests:
+                - unique
+                - not_null
+
+    - name: facts_salesorderdetails
+      description: "Tabela de fatos de pedidos"
+      columns:
+          - name: salesorderid
             description: "The primary key for this table"
             tests:
                 - unique
