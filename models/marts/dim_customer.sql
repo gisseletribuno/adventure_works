@@ -10,12 +10,6 @@ with
 
         from {{ref('stg_customer')}}
     )
-,   transformed1 as (
-        select
-        row_number () over (order by customerid) as customer_sk
-        , *
-    from selected1
-)
 
 ,   selected2 as (
         select
@@ -33,12 +27,6 @@ with
 
         from {{ref('stg_person')}}            
     )
-,   transformed2 as (
-        select
-        row_number () over (order by businessentityid) as person_sk
-        , *
-    from selected2
-)
 
 ,   selected3 as (
         select
@@ -48,12 +36,6 @@ with
 
         from {{ref('stg_personcreditcard')}}            
     )
-,   transformed3 as (
-        select
-        row_number () over (order by businessentityid) as personcreditcard_sk
-        , *
-    from selected3
-)
 
 ,   selected4 as (
         select
@@ -66,40 +48,41 @@ with
 
         from {{ref('stg_creditcard')}}            
     )
-,   transformed4 as (
+
+,   final1 as (
         select
-        row_number () over (order by creditcardid) as creditcard_sk
-        , *
-    from selected4
+            selected1.customerid
+            , selected1.personid
+            , selected1.territoryid
+            , selected1.storeid
+            , selected2.businessentityid
+            , selected2.title
+            , selected2.lastname
+            , selected2.firstname
+            , selected2.middlename
+            , selected2.suffix
+            , selected2.emailpromotion
+            , selected2.persontype
+            , selected2.namestyle
+            , selected3.creditcardid
+            , selected4.cardtype
+            , selected4.cardnumber
+            , selected4.expmonth
+            , selected4.expyear	
+            , selected1.rowguid
+            , selected1.modifieddate
+            from selected1
+            left join selected2 on selected1.personid = selected2.businessentityid
+            left join selected3 on selected2.businessentityid = selected3.businessentityid 
+            left join selected4 on selected3.creditcardid = selected4.creditcardid  
 )
 
-,   final as (
+,   final2 as (
         select
-            transformed1.personid
-            , transformed1.customer_sk
-            , transformed1.territoryid
-            , transformed1.storeid
-            , transformed2.businessentityid
-            , transformed2.title
-            , transformed2.lastname
-            , transformed2.firstname
-            , transformed2.middlename
-            , transformed2.suffix
-            , transformed2.emailpromotion
-            , transformed2.persontype
-            , transformed2.namestyle
-            , transformed3.creditcardid
-            , transformed4.cardtype
-            , transformed4.cardnumber
-            , transformed4.expmonth
-            , transformed4.expyear	
-            , transformed1.rowguid
-            , transformed1.modifieddate
-            from transformed1
-            left join transformed2 on transformed1.personid = transformed2.businessentityid
-            left join transformed3 on transformed2.businessentityid = transformed3.businessentityid 
-            left join transformed4 on transformed3.creditcardid = transformed4.creditcardid  
-)
+        row_number () over (order by customerid) as customer_sk
+        , *
+    from final1
+    )
 
 select *
-from final
+from final2
