@@ -25,7 +25,7 @@ with
         salesorderheader.salesorderid
         , customer.customer_sk as customer_fk
         , employee.employee_sk as employee_fk
-        , reason.salesreason_sk as salesreason_fk
+        , reason.reason_sk as reason_fk
         , location.location_sk as location_fk
         , salesorderheader.purchaseordernumber
         --, creditcardid
@@ -51,10 +51,10 @@ with
         , salesorderheader.modifieddate	        
 
         from {{ ref ('stg_salesorderheader')}} as salesorderheader
-        left join customer on salesorderheader.customerid = customer.customer_sk
-        left join employee on salesorderheader.salesorderid = employee.employee_sk
-        left join reason on salesorderheader.salesorderid = reason.salesreason_sk
-        left join location on salesorderheader.territoryid = location.location_sk
+        left join customer on salesorderheader.customerid = customer.customerid
+        left join employee on salesorderheader.salespersonid = employee.businessentityid
+        left join reason on salesorderheader.salesorderid = reason.salesorderid
+        left join location on salesorderheader.shiptoaddressid = location.addressid
 
     )
 
@@ -72,7 +72,7 @@ with
         , salesorderdetail.modifieddate	
 
         from {{ref ('stg_salesorderdetail')}} as salesorderdetail
-        left join product on salesorderdetail.productid = product.product_sk
+        left join product on salesorderdetail.productid = product.productid
     )
 
     , final as (
@@ -80,7 +80,7 @@ with
         salesorderdetail_with_sk.salesorderdetailid
         , salesorderheader_with_sk.customer_fk
         , salesorderheader_with_sk.employee_fk
-        , salesorderheader_with_sk.salesreason_fk
+        , salesorderheader_with_sk.reason_fk
         , salesorderheader_with_sk.location_fk
         , salesorderheader_with_sk.purchaseordernumber
        -- , salesorderheader_with_sk.creditcardid
