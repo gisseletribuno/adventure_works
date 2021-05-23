@@ -13,13 +13,6 @@ with
 
         from {{ref('stg_salesperson')}}
     )
-,   transformed1 as (
-        select
-        row_number () over (order by businessentityid) as employee_sk
-        , *
-    from selected1
-)
-
 ,   selected2 as (
         select
             businessentityid
@@ -40,14 +33,7 @@ with
 
         from {{ref('stg_employee')}}            
     )
-,   transformed2 as (
-        select
-        row_number () over (order by businessentityid) as employee_sk
-        , *
-    from selected2
-)
-
-,   selected3 as (
+,  selected3 as (
         select
             businessentityid
             , title
@@ -62,49 +48,50 @@ with
             , modifieddate	
 
         from {{ref('stg_person')}}            
-    )
-,   transformed3 as (
+    )   
+
+,   final1 as (
         select
-        row_number () over (order by businessentityid) as person_sk
-        , *
-    from selected3
+            selected1.businessentityid
+            , selected2.nationalidnumber
+            , selected2.loginid	
+            , selected2.jobtitle
+            , selected2.birthdate	        
+            , selected2.gender	
+            , selected2.maritalstatus
+            , selected2.hiredate	
+            , selected3.title
+            , selected3.lastname
+            , selected3.firstname
+            , selected3.middlename
+            , selected3.emailpromotion
+            , selected3.persontype
+            , selected3.namestyle
+            , selected3.suffix
+            , selected2.salariedflag	
+            , selected2.sickleavehours	
+            , selected2.organizationnode		
+            , selected2.vacationhours
+            , selected2.currentflag
+            , selected2.modifieddate	
+            , selected2.rowguid	      
+            , selected1.territoryid
+            , selected1.salesquota
+            , selected1.saleslastyear
+            , selected1.salesytd
+            , selected1.commissionpct
+            , selected1.bonus
+            from selected1
+            left join selected2 on selected1.businessentityid = selected2.businessentityid	
+            left join selected3 on selected2.businessentityid = selected3.businessentityid	        
 )
 
-,   final as (
+,   final2 as (
         select
-            transformed1.employee_sk
-            , transformed2.nationalidnumber
-            , transformed2.loginid	
-            , transformed2.jobtitle
-            , transformed2.birthdate	        
-            , transformed2.gender	
-            , transformed2.maritalstatus
-            , transformed2.hiredate	
-            , transformed3.title
-            , transformed3.lastname
-            , transformed3.firstname
-            , transformed3.middlename
-            , transformed3.emailpromotion
-            , transformed3.persontype
-            , transformed3.namestyle
-            , transformed3.suffix
-            , transformed2.salariedflag	
-            , transformed2.sickleavehours	
-            , transformed2.organizationnode		
-            , transformed2.vacationhours
-            , transformed2.currentflag
-            , transformed2.modifieddate	
-            , transformed2.rowguid	      
-            , transformed1.territoryid
-            , transformed1.salesquota
-            , transformed1.saleslastyear
-            , transformed1.salesytd
-            , transformed1.commissionpct
-            , transformed1.bonus
-            from transformed1
-            left join transformed2 on transformed1.businessentityid = transformed2.businessentityid	
-            left join transformed3 on transformed2.businessentityid = transformed3.businessentityid	        
-)
+        row_number () over (order by businessentityid) as employee_sk
+        , *
+    from final1
+    )
 
 select *
-from final
+from final2
