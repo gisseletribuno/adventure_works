@@ -28,7 +28,7 @@ with
         , reason.reason_sk as reason_fk
         , location.location_sk as location_fk
         , salesorderheader.purchaseordernumber
-        --, creditcardid
+        , salesorderheader.creditcardid
         , salesorderheader.shipmethodid	
         , salesorderheader.shiptoaddressid
         , salesorderheader.billtoaddressid	
@@ -77,21 +77,18 @@ with
 
     , final as (
         select
-        salesorderdetail_with_sk.salesorderdetailid
+        salesorderdetail_with_sk.salesorderid
+        , salesorderdetail_with_sk.salesorderdetailid
         , salesorderheader_with_sk.customer_fk
         , salesorderheader_with_sk.employee_fk
         , salesorderheader_with_sk.reason_fk
         , salesorderheader_with_sk.location_fk
+        , salesorderdetail_with_sk.product_fk
         , salesorderheader_with_sk.purchaseordernumber
-       -- , salesorderheader_with_sk.creditcardid
-        , salesorderheader_with_sk.shipmethodid	
-        , salesorderheader_with_sk.shiptoaddressid
-        , salesorderheader_with_sk.billtoaddressid	
-        , salesorderheader_with_sk.salespersonid	
-        , salesorderheader_with_sk.territoryid
-        , salesorderheader_with_sk.currencyrateid
-        , salesorderheader_with_sk.rowguid	
-        , salesorderheader_with_sk.status		
+        , salesorderheader_with_sk.status
+        , salesorderdetail_with_sk.orderqty	
+        , salesorderdetail_with_sk.unitprice
+        , salesorderdetail_with_sk.unitpricediscount
         , salesorderheader_with_sk.subtotal		
         , salesorderheader_with_sk.taxamt	
         , salesorderheader_with_sk.onlineorderflag            
@@ -100,17 +97,20 @@ with
         , salesorderheader_with_sk.duedate	
         , salesorderheader_with_sk.totaldue	
         , salesorderheader_with_sk.shipdate	
+        , salesorderheader_with_sk.shipmethodid	
+        , salesorderheader_with_sk.shiptoaddressid
+        , salesorderheader_with_sk.billtoaddressid	
+        , salesorderheader_with_sk.salespersonid	
+        , salesorderheader_with_sk.territoryid
+        , salesorderheader_with_sk.currencyrateid
+        , salesorderheader_with_sk.creditcardid        		
         , salesorderheader_with_sk.creditcardapprovalcode
         , salesorderheader_with_sk.revisionnumber
         , salesorderheader_with_sk.accountnumber
-        , salesorderheader_with_sk.modifieddate	        
-        , salesorderdetail_with_sk.product_fk		
-        , salesorderdetail_with_sk.salesorderid
         , salesorderdetail_with_sk.specialofferid
-        , salesorderdetail_with_sk.orderqty	
-        , salesorderdetail_with_sk.unitprice
-        , salesorderdetail_with_sk.unitpricediscount	
         , salesorderdetail_with_sk.carriertrackingnumber
+        , salesorderheader_with_sk.rowguid
+        , salesorderheader_with_sk.modifieddate	
 
         from salesorderheader_with_sk
         left join salesorderdetail_with_sk on salesorderheader_with_sk.salesorderid = salesorderdetail_with_sk.salesorderid
