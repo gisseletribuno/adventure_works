@@ -13,12 +13,6 @@ with
 
         from {{ref('stg_address')}}
     )
-,   transformed1 as (
-        select
-        row_number () over (order by addressid) as address_sk
-        , *
-    from selected1
-)
 
 ,   selected2 as (
         select
@@ -32,12 +26,6 @@ with
 
         from {{ref('stg_stateprovince')}}            
     )
-,   transformed2 as (
-        select
-        row_number () over (order by territoryid) as location_sk
-        , *
-    from selected2
-)
 
 ,   selected3 as (
         select
@@ -47,34 +35,35 @@ with
 
         from {{ref('stg_countryregion')}}            
     )
-,   transformed3 as (
+
+,   final1 as (
         select
-        row_number () over (order by countryregioncode) as countryregioncode_sk
-        , *
-    from selected3
+            selected1.addressid
+            , selected1.stateprovinceid
+            , selected2.territoryid
+            , selected1.city	
+            , selected1.addressline1
+            , selected1.addressline2	
+            , selected1.postalcode	
+            , selected1.spatiallocation
+            , selected2.stateprovince
+            , selected3.country
+            , selected2.stateprovincecode
+            , selected2.countryregioncode
+            , selected2.isonlystateprovinceflag
+            , selected1.rowguid
+            , selected1.modifieddate           		
+            from selected1
+            left join selected2 on selected1.stateprovinceid = selected2.stateprovinceid
+            left join selected3 on selected3.countryregioncode = selected2.countryregioncode 
 )
 
-,   final as (
+,   final2 as (
         select
-            transformed1.stateprovinceid
-            , transformed1.addressid
-            , transformed2.location_sk
-            , transformed1.city	
-            , transformed1.addressline1
-            , transformed1.addressline2	
-            , transformed1.postalcode	
-            , transformed1.spatiallocation
-            , transformed2.stateprovince
-            , transformed3.country
-            , transformed2.stateprovincecode
-            , transformed2.countryregioncode
-            , transformed2.isonlystateprovinceflag
-            , transformed1.rowguid
-            , transformed1.modifieddate           		
-            from transformed1
-            left join transformed2 on transformed1.stateprovinceid = transformed2.stateprovinceid
-            left join transformed3 on transformed3.countryregioncode = transformed2.countryregioncode 
-)
+        row_number () over (order by addressid) as location_sk
+        , *
+    from final1
+    )
 
 select *
-from final
+from final2
