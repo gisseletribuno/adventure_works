@@ -20,7 +20,7 @@ models:
                 - unique
                 - not_null
         
-    - name: dim_salesreason
+    - name: dim_reason
       description: "Tabela de dimensão de motivo de compra"
       columns:
           - name: reason_sk
@@ -39,7 +39,7 @@ models:
                 - not_null
 
     - name: dim_employee
-      description: "Tabela de dimensão de funiconários"
+      description: "Tabela de dimensão de funcionários"
       columns:
           - name: employee_sk
             description: "The primary key for this table"
