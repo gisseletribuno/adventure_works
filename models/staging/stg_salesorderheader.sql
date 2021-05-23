@@ -5,7 +5,7 @@ with
             salesorderid
 
             /* Foreign key */
-            , businessentityid
+            --, businessentityid
             , purchaseordernumber
             , customerid
             , creditcardid
