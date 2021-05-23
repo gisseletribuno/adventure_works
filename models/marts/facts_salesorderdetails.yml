@@ -1,0 +1,47 @@
+
+version: 2
+
+models:
+
+    - name: facts_salesorderdetails
+      description: "Tabela de fatos de pedidos"
+      columns:
+          - name: salesorderid
+            description: "The primary key for this table"
+            tests:
+                - not_null
+
+    - name: customer_fk
+      description: "Chave estrangeira da tabela clientes"
+      tests:
+        - relationships:
+            to: ref('dim_customer')
+            field: customer_sk
+
+    - name: employee_fk
+      description: "Chave estrangeira da tabela funcionários"
+      tests:
+        - relationships:
+            to: ref('dim_employee')
+            field: employee_sk
+
+    - name: location_fk
+      description: "Chave estrangeira da tabela localização"
+      tests:
+        - relationships:
+            to: ref('dim_location')
+            field: location_sk
+
+    - name: reason_fk
+      description: "Chave estrangeira da tabela motivo"
+      tests:
+        - relationships:
+            to: ref('dim_reason')
+            field: reason_sk
+
+    - name: product_fk
+      description: "Chave estrangeira da tabela produtos"
+      tests:
+        - relationships:
+            to: ref('dim_product')
+            field: product_sk

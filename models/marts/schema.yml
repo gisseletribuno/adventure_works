@@ -47,11 +47,3 @@ models:
                 - unique
                 - not_null
 
-    - name: facts_salesorderdetails
-      description: "Tabela de fatos de pedidos"
-      columns:
-          - name: salesorderid
-            description: "The primary key for this table"
-            tests:
-                - unique
-                - not_null
