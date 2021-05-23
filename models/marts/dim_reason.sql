@@ -7,39 +7,35 @@ with
 
         from {{ref('stg_salesorderheaderreason')}}
     )
-,   transformed1 as (
-        select
-        row_number () over (order by salesorderid) as salesreason_sk
-        , *
-    from selected1
-)
 
 ,   selected2 as (
         select
             salesreasonid
             , name	
-            , modifieddate
             , reasontype
+            , modifieddate
 
         from {{ref('stg_salesreason')}}            
     )
-,   transformed2 as (
+
+,   final1 as (
         select
-        row_number () over (order by salesreasonid) as salesreason_sk
+            selected1.salesorderid
+            , selected2.name	
+            , selected2.reasontype
+            , selected2.modifieddate
+
+
+            from selected1
+            left join selected2 on selected1.salesreasonid = selected2.salesreasonid	        
+)
+
+,   final2 as (
+        select
+        row_number () over (order by salesorderid) as reason_sk
         , *
-    from selected2
-)
-
-,   final as (
-        select
-            transformed1.salesreason_sk
-            , transformed2.name	
-            , transformed2.modifieddate
-            , transformed2.reasontype
-
-            from transformed1
-            left join transformed2 on transformed1.salesreason_sk = transformed2.salesreasonid	        
-)
+    from final1
+    )
 
 select *
-from final
+from final2
