@@ -1,15 +1,10 @@
-Welcome to your new dbt project!
+# Análise Adventure Works
 
-### Using the starter project
+Este é o projeto final do curso **Analytics Engineering** da **Indicium Academy**, cujo objetivo é extrair informações de um Banco de Dados transacional para o Google BigQuery, realizar a modelagem dos dados através do **DBT** criando um DataWarehouse com arquitetura de estrela, e por fim realizar a análise dos dados utilizando a ferramenta de BI DataStudio gerando relatórios gerenciais com insights sobre o negócio.
 
-Try running the following commands:
-- dbt run
-- dbt test
+## Tecnologias utilizadas
 
-
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](http://slack.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+- Stitch
+- Google Big Query
+- DBT
+- Google Data Studio
